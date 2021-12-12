@@ -9,7 +9,7 @@ import com.example.androidtask.data.local.Converters
 data class MovieModel
     (
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    val id: Int ?= null ,
     val genreName: String,
     @TypeConverters(Converters::class)
     val moviesList: ArrayList<Movie>

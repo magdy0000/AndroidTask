@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.androidtask.R
+import com.example.androidtask.adapters.HomeRecyclerAdapter
 
 
 import com.example.androidtask.data.network.NetworkState
@@ -22,7 +23,7 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val homeViewModel: HomeViewModel by viewModels()
-
+    private val recyclerAdapter by lazy { HomeRecyclerAdapter() }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,8 +57,8 @@ class HomeFragment : Fragment() {
                 NetworkState.Status.SUCCESS -> {
 
                     val data = it.data as ArrayList<MovieModel>
-
-
+                    recyclerAdapter.listAllMovies = data
+                    binding.recyclerMovies.adapter= recyclerAdapter
                     ProgressLoading.dismiss()
                 }
                 else -> {

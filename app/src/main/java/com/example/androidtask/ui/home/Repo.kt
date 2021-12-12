@@ -1,5 +1,6 @@
 package com.example.androidtask.ui.home
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.androidtask.data.local.MyDao
 import com.example.androidtask.data.models.Genre
@@ -9,10 +10,12 @@ import com.example.androidtask.data.network.NetworkState
 import com.example.androidtask.data.models.Movie
 import com.example.androidtask.data.models.MovieModel
 import com.example.androidtask.data.models.MoviesListModel
+import com.example.androidtask.utils.MySharedPreferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.lang.Exception
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class Repo @Inject
@@ -20,60 +23,87 @@ constructor(
     private val apiClient: ApiClient, private val myDao: MyDao
 ) {
 
-    private var  finalMovieList :ArrayList<MovieModel> = ArrayList()
-    private var  movies: MoviesListModel?= null
-    private var  genres: GenresModel?= null
+    private var finalMovieList: ArrayList<MovieModel> = ArrayList()
+    private var movies: MoviesListModel? = null
+    private var genres: GenresModel? = null
     val newsLiveData = MutableLiveData<NetworkState>()
-
 
 
     private suspend fun getMoviesRemote() {
 
         CoroutineScope(Dispatchers.Default).launch {
-
-            val moviesJob =  launch {
-                movies = apiClient.getAllMovies()
-            }
-            val moviesGenres =  launch {
-                genres = apiClient.getGenres()
-            }
-            moviesJob.join()
-            moviesGenres.join()
-
-            getMovieList(genres?.genres!!,movies?.results!!)
+                val moviesJob = launch {
+                    try {
+                        movies = apiClient.getAllMovies()
+                    }catch (e:Exception){
+                        Log.e("TAG", "getMoviesRemote: ",)
+                        getDataFromCache()
+                        newsLiveData.postValue(NetworkState.getErrorMessage(e))
+                    }
+                }
+                moviesJob.join()
+                val moviesGenres = launch {
+                    try {
+                        genres = apiClient.getGenres()
+                    }catch (e : Exception){
+                        newsLiveData.postValue(NetworkState.getErrorMessage(e))
+                        Log.e("TAG", "getMoviesRemote: ",)
+                    }
+                }
+               moviesGenres.join()
+            if (genres!= null)
+            getMovieList(genres?.genres!!, movies?.results!!)
         }
     }
-    private suspend fun getMovieList(list: ArrayList<Genre>
-                                     , moviesList:ArrayList <Movie>)  {
 
-        for (genre in list){
-            val newList =   moviesList.filter {
+    private suspend fun getMovieList(
+        list: ArrayList<Genre>, moviesList: ArrayList<Movie>
+    ) {
+
+        for (genre in list) {
+            val newList = moviesList.filter {
                 it.genre_ids.contains(genre.id)
             }
             if (newList.isNotEmpty())
-            finalMovieList.add(MovieModel(1,genre.name,newList as ArrayList<Movie>))
+                finalMovieList.add(
+                    MovieModel(
+                        genreName = genre.name,
+                        moviesList = newList as ArrayList<Movie>
+                    )
+                )
         }
-        newsLiveData.postValue( NetworkState.getLoaded(finalMovieList))
+        newsLiveData.postValue(NetworkState.getLoaded(finalMovieList))
         myDao.insertMovies(finalMovieList)
+        MySharedPreferences.setTime(System.currentTimeMillis())
     }
 
     suspend fun getMovies() {
-        newsLiveData.postValue( NetworkState.LOADING)
-        getDataFromCache()
-        try {
+        val time = System.currentTimeMillis() - MySharedPreferences.getTime()
+        val timeDeff = (time / (1000 * 60 * 60)).toInt()
+
+        newsLiveData.postValue(NetworkState.LOADING)
+        if (timeDeff >= 4) {
             getMoviesRemote()
-        } catch (e: Exception) {
-            newsLiveData.postValue(  NetworkState.getErrorMessage(e))
+        } else {
+            getDataFromCache()
+
         }
+
     }
-    private suspend fun getDataFromCache (){
+
+
+    private suspend fun getDataFromCache() {
+
         try {
-            val data  =  myDao.getAllMovies()
+            val data = myDao.getAllMovies()
             if (data != null)
-                newsLiveData.postValue(  NetworkState.getLoaded(data))
+                newsLiveData.postValue(NetworkState.getLoaded(data))
         }catch (e : Exception){
-            newsLiveData.postValue(  NetworkState.getErrorMessage(e))
+
+            Log.e("TAG", "getDataFromCache:$e ", )
         }
+
+
 
     }
 

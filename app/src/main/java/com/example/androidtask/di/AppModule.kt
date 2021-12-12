@@ -35,7 +35,6 @@ object AppModule {
             .writeTimeout(50, TimeUnit.SECONDS)
             .readTimeout(50, TimeUnit.SECONDS)
             .callTimeout(50, TimeUnit.SECONDS)
-            .retryOnConnectionFailure(true)
             .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .addInterceptor(object : Interceptor {
                 override fun intercept(chain: Interceptor.Chain): Response {

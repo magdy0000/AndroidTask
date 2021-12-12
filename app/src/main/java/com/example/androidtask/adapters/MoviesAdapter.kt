@@ -1,15 +1,13 @@
 package com.example.androidtask.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.androidtask.R
 import com.example.androidtask.data.models.Movie
 import com.example.androidtask.databinding.ItemMovieBinding
+import com.example.androidtask.utils.Const
 
 class MoviesAdapter : RecyclerView.Adapter<MoviesAdapter.Holder>() {
 
@@ -34,12 +32,12 @@ class MoviesAdapter : RecyclerView.Adapter<MoviesAdapter.Holder>() {
 
         holder.binding.apply {
             Glide.with(holder.itemView.context)
-                .load(Cdata?.urlToImage)
+                .load(Const.BASE_IMAGE+data?.poster_path)
                 .placeholder(R.drawable.ic_place_holder)
-                .into(holder.image)
+                .into(imageMovie)
+            textTitle.text = data?.original_title
         }
-        holder.textTitle.text = data?.title
-        holder.textSourceName.text = data?.source?.name
+
 
 
 

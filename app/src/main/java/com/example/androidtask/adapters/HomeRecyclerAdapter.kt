@@ -32,6 +32,7 @@ class HomeRecyclerAdapter : RecyclerView.Adapter<HomeRecyclerAdapter.Holder>() {
         var adapter: MoviesAdapter? = null
         init {
 
+            adapter = MoviesAdapter()
             binding.recyclerMovies.setHasFixedSize(true)
             binding.recyclerMovies.adapter = adapter
 
