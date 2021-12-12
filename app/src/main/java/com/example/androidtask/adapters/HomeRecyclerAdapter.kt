@@ -10,6 +10,7 @@ class HomeRecyclerAdapter : RecyclerView.Adapter<HomeRecyclerAdapter.Holder>() {
 
     var listAllMovies : ArrayList<MovieModel>?= null
 
+    var onItemClick : MoviesAdapter.OnItemClick?= null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
        val binding = ItemAllMoviesBinding.inflate(LayoutInflater.from(parent.context))
         return Holder(binding)
@@ -33,6 +34,7 @@ class HomeRecyclerAdapter : RecyclerView.Adapter<HomeRecyclerAdapter.Holder>() {
         init {
 
             adapter = MoviesAdapter()
+            adapter?.onItemClick = onItemClick
             binding.recyclerMovies.setHasFixedSize(true)
             binding.recyclerMovies.adapter = adapter
 

@@ -11,6 +11,7 @@ import com.example.androidtask.data.models.Movie
 import com.example.androidtask.data.models.MovieModel
 import com.example.androidtask.data.models.MoviesListModel
 import com.example.androidtask.utils.MySharedPreferences
+import com.example.androidtask.utils.SingleLiveEvent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -26,11 +27,11 @@ constructor(
     private var finalMovieList: ArrayList<MovieModel> = ArrayList()
     private var movies: MoviesListModel? = null
     private var genres: GenresModel? = null
-    val newsLiveData = MutableLiveData<NetworkState>()
+    val newsLiveData = SingleLiveEvent<NetworkState>()
 
 
     private suspend fun getMoviesRemote() {
-
+        newsLiveData.postValue(NetworkState.LOADING)
         CoroutineScope(Dispatchers.Default).launch {
                 val moviesJob = launch {
                     try {
@@ -81,7 +82,7 @@ constructor(
         val time = System.currentTimeMillis() - MySharedPreferences.getTime()
         val timeDeff = (time / (1000 * 60 * 60)).toInt()
 
-        newsLiveData.postValue(NetworkState.LOADING)
+
         if (timeDeff >= 4) {
             getMoviesRemote()
         } else {

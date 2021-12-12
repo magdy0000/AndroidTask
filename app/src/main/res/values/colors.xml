@@ -8,6 +8,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="deepSkyBlue">#1a73e8</color>
+    <color name="colorGray">#ddd</color>
     <color name="dark_mode">#2B2B2B</color>
     <color name="shade_black_gray">#9B9B9B</color>
 </resources>

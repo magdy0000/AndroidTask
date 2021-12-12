@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.example.androidtask.R
 import com.example.androidtask.databinding.FragmentDetailsBinding
 import com.example.androidtask.databinding.FragmentHomeBinding
+import com.example.androidtask.utils.Const
 
 class DetailsFragment : Fragment () {
 
@@ -32,11 +33,13 @@ class DetailsFragment : Fragment () {
         DetailsFragmentArgs.fromBundle(requireArguments()).apply {
             binding.apply {
                 Glide.with(requireContext())
-                    .load(image).placeholder(R.drawable.ic_place_holder)
-                    .into(imageNews)
+                    .load(Const.BASE_IMAGE+image).placeholder(R.drawable.ic_place_holder)
+                    .into(imageMovie)
 
                 textDesc.text = description
                 textTitle.text = title
+                textReleaseDate.text= getString(R.string.release_date) + date
+                textVoteCount.text = getString(R.string.vote) +vote
             }
         }
     }

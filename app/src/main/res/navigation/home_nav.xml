@@ -13,16 +13,18 @@
         >
         <argument
             android:name="image"
-            app:argType="string"
-            app:nullable="true" />
+            app:argType="string" />
         <argument
             android:name="title"
-            app:argType="string"
-            app:nullable="true" />
+            app:argType="string" />
         <argument
             android:name="description"
-            app:argType="string"
-            app:nullable="true" />
+            app:argType="string" />
+        <argument android:name="date"
+            app:argType="string" />
+        <argument
+            android:name="vote"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/homeFragment"

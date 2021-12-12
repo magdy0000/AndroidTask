@@ -2,42 +2,70 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <ImageView
-        android:id="@+id/image_news"
+        android:id="@+id/image_movie"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_120sdp"
+        android:scaleType="fitXY"
+        android:layout_height="@dimen/_140sdp"
         app:layout_constraintTop_toTopOf="parent"/>
 
 
     <TextView
         android:id="@+id/text_title"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_5sdp"
         app:layout_constraintStart_toStartOf="parent"
         android:textStyle="bold"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="@dimen/_13ssp"
         android:layout_marginHorizontal="@dimen/_5sdp"
-
         tools:text= "Hallo"
-        app:layout_constraintTop_toBottomOf="@+id/image_news"
+        app:layout_constraintTop_toBottomOf="@+id/image_movie"
         />
+
+    <TextView
+        android:id="@+id/text_vote_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_5sdp"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_13ssp"
+
+        android:layout_marginTop="@dimen/_10sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_title"
+        tools:text="Hallo" />
+
+    <TextView
+        android:id="@+id/text_release_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_5sdp"
+        android:textColor="@color/white"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:textSize="@dimen/_13ssp"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_vote_count"
+        tools:text="Hallo" />
+
     <TextView
         android:id="@+id/text_desc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_5sdp"
-        app:layout_constraintStart_toStartOf="parent"
-        android:textSize="@dimen/_11ssp"
         android:layout_marginHorizontal="@dimen/_5sdp"
+        android:textColor="@color/shade_black_gray"
+        android:textSize="@dimen/_12ssp"
+        android:layout_marginTop="@dimen/_10sdp"
 
-        tools:text= "Hallo"
-        app:layout_constraintTop_toBottomOf="@+id/text_title"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_release_date"
+        tools:text="Hallo" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

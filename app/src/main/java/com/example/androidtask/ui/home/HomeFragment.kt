@@ -6,8 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.androidtask.R
 import com.example.androidtask.adapters.HomeRecyclerAdapter
+import com.example.androidtask.adapters.MoviesAdapter
+import com.example.androidtask.data.models.Movie
 
 
 import com.example.androidtask.data.network.NetworkState
@@ -44,7 +47,18 @@ class HomeFragment : Fragment() {
 
     private fun onClicks() {
 
+        recyclerAdapter.onItemClick = object : MoviesAdapter.OnItemClick{
+            override fun onClick(movie: Movie) {
 
+                movie.apply {
+                    findNavController().navigate(HomeFragmentDirections
+                        .actionHomeFragmentToDetailsFragment(poster_path
+                            ,original_title,overview,release_date,vote_average.toString()))
+                }
+
+            }
+
+        }
     }
 
     private fun observers() {
